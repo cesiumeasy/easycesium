@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+				<link rel="stylesheet" href="./Cesium/Widgets/widgets.css">
+		<script src="./Cesium/Cesium.js"></script>
+		<script></script>
+	</head>
+	<body>
+		<div id="container"></div>
+		<script>
+			window.imgurl="./images/Textures/Trail.png";
+				window.planeurl="./data/Cesium_Air.glb";
+		</script>
+		<script src="./dist/easyCesium.js"></script>
+		<script type="module">
+			
+			// import {easyCesium} from "./dist/easyCesium.js";
+		window.Cesium= Cesium;
+		// console.log(easyCesium.easyCesium)
+			let viewer=window.viewer=new Cesium.Viewer("container",{
+				imageryProvider: new Cesium.SingleTileImageryProvider({
+				          url: "./images/baseImage.jpg",
+				        }),
+					shouldAnimate: true,
+					 // 是否显示时间轴
+				    // timeline: true,
+			})
+			viewer.scene.globe.depthTestAgainstTerrain = true;
+				let esc = new easyCesium.init(viewer);
+			esc.test(viewer)
+			esc.line(1,2,3,4)
+			setTimeout(()=>{
+			esc.tools().tools("晨昏线",true)
+				},1000)
+				setTimeout(()=>{
+			esc.tools().tools("大气圈效果",false)
+			},4000)
+			let tools=esc.tools();
+			setTimeout(()=>{
+			tools.tools("经纬网格",true,0.9,0.6)
+			},5000)
+			setTimeout(()=>{
+				tools.tools("经纬网格",false)
+			},15000)
+			console.log(esc.versoin())
+			let pg={
+				"px":"./images/skybox/px.jpg",
+				"nx":"./images/skybox/nx.jpg",
+				"pz":"./images/skybox/pz.jpg",
+				"nz":"./images/skybox/nz.jpg",
+				"py":"./images/skybox/py.jpg",
+				"ny":"./images/skybox/ny.jpg"
+			}
+			tools.tools("天空盒",true,pg)
+			pg={
+				"px":"./images/skybox2/px.png",
+				"nx":"./images/skybox2/nx.png",
+				"pz":"./images/skybox2/pz.png",
+				"nz":"./images/skybox2/nz.png",
+				"py":"./images/skybox2/py.png",
+				"ny":"./images/skybox2/ny.png"
+			}
+			setTimeout(()=>{
+				tools.tools("天空盒",true,pg)
+			},5000)
+			setTimeout(()=>{
+				tools.tools("天空盒",false)
+			},10000)
+		
+			// 1216403.8845586285,
+			// -4736357.493351395,
+			// 4081299.715698949
+			let line=esc.line()
+			// 经纬度  线宽宽度  线颜色  是否贴地
+			line.baseLine({
+				positions:[-24, 63,100000,-2, 60,100000],
+				color:"#ff00ff",
+				width:1
+			})
+			let move=esc.move();
+			let datas=move.movePoint({
+				"dataUrl":"./data/ClampToGround.czml",
+					cx:1216403.8845586285,
+					cy:-4736357.493351395,
+					cz:4081299.715698949,
+					h:4.2892217081808806,
+					p:-0.4799070147502502,
+					r:6.279789177843313
+			})
+			console.log(datas)
+			datas.then(res=>{
+				console.log(res)
+				
+				console.log(res.getById("CesiumMilkTruck"))
+				// 1216348.1632364073,
+				// -4736348.958775471,
+				// line.definedLine({moveEntity:res.getById("CesiumMilkTruck"),startLng:"-75.59704430269619",startLat:"40.03819472851051",width:1,color:"#ff00f0"})
+			// res.getById("CesiumMilkTruck").update(time=>{
+				console.log("time-----",Cesium.CzmlDataSource);
+			// })
+				line.definedLines({moveEntity:res.getById("CesiumMilkTruck"),startLng:"-75.59704430269619",startLat:"40.03819472851051",width:1,color:"#ff00f0"})
+			})
+			
+			
+			line.definedLinetx({color:"#00f00f",points:[-24, 69,100000,-2, 68,100000],width:1});
+			// console.log("又返回吗？",move.bindLeft())
+			// move.bindLeft().then(res=>{
+			// 	console.log("又返回吗？",res)
+			// })
+			move.bindLeft()
+			function change(){
+				console.log("改变了---------------",move.target2)
+			}
+			move.watch(change)
+			
+			
+			line.definedArc()
+			
+			
+			line.definedArc2()
+			setTimeout(res=>{
+					move.movePlane()
+					move.movefly()
+			},10000)
+	
+	
+	setTimeout(res=>{
+			move.movePlane()
+			move.movefly()
+	},50000)
+			// definedLines
+			// 移除鼠标事件
+		 //   setTimeout(()=>{
+			//    console.log("移除鼠标事件")
+			// move.remove()
+			// },15000)
+			// tools.tools("定位Cart",{
+			// 	lat:40.03819472851051,
+			// 	lon:-75.59704430269619,
+			// 	h:4081299.715698949,
+			// 	// h:4.2892217081808806,
+			// 	// p:-0.4799070147502502,
+			// 	// r:6.279789177843313
+			// })
+			// tools.tools("定位Cart",{
+			// 	cx:1216403.8845586285,
+			// 	cy:-4736357.493351395,
+			// 	cz:4081299.715698949,
+			// 	h:4.2892217081808806,
+			// 	p:-0.4799070147502502,
+			// 	r:6.279789177843313
+			// })
+			
+			
+			
+		
+		</script>
+	</body>
+</html>
